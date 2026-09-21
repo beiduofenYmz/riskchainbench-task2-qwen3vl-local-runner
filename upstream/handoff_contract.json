@@ -1,0 +1,24 @@
+{
+  "case_count": 600,
+  "contract_sha256": "5202df5b9b0f85136bda43128b73343a93365175e43154d1a390443a7ef448ab",
+  "handoff_id": "riskchainbench-task1-task2-handoff-v0.1",
+  "handoff_map": {
+    "bytes": 287892,
+    "path": "evaluator_only/handoff_map.jsonl",
+    "sha256": "78502501b787b892049e45587d1ece84547c960b35f66f4764dfb81f2e336177",
+    "visibility": "EVALUATOR_ONLY"
+  },
+  "handoff_policy": {
+    "automatic_oracle_correction": false,
+    "commit_task1_before_task2": true,
+    "failed_reconstruction_outcome": "NON_INVESTIGABLE",
+    "task2_may_modify_task1_output": false
+  },
+  "schema_version": "riskchainbench-handoff-contract/v0.1",
+  "status": "PASS",
+  "task1_benchmark_id": "riskchainbench-task1-obfuscated-reconstruction-v0.4",
+  "task1_contract_sha256": "330292bd405c0d0edc6941ac3f07c570917072fd78e71214ffba86af34b0bd87",
+  "task1_variant_index": 0,
+  "task2_benchmark_id": "riskchainbench-task2-controlled-web-investigation-v0.4",
+  "task2_contract_sha256": "52b2e3e4bbca46fe6f007bdc7b553fa0b2f1f923c82a5b775faef09350e9ff42"
+}

@@ -1,0 +1,106 @@
+{
+  "benchmark_id": "riskchainbench-task2-controlled-web-investigation-v0.4",
+  "case_count": 600,
+  "contract_sha256": "52b2e3e4bbca46fe6f007bdc7b553fa0b2f1f923c82a5b775faef09350e9ff42",
+  "files": {
+    "capability_audit": {
+      "bytes": 685048,
+      "path": "evaluator_only/capability_audit.json",
+      "sha256": "d3f7b6f6cbb0614cd145b992c5472abd979f84142b3e5a784a2812338bedaaf3",
+      "visibility": "EVALUATOR_ONLY"
+    },
+    "case_inputs": {
+      "bytes": 387813,
+      "path": "model_visible/task2_case_inputs.jsonl",
+      "sha256": "1be26a8d84db5994846f7dd2d540347b762066647a1b3a0a8a2329349defaebc",
+      "visibility": "MODEL_VISIBLE"
+    },
+    "docker_reference": {
+      "bytes": 513730,
+      "path": "evaluator_only/docker_reference.jsonl",
+      "sha256": "ee59ec065ee74ba44892a43ade0198a2e492e6c987226b3e61566848a8a3259d",
+      "visibility": "EVALUATOR_ONLY"
+    },
+    "observation_manifest": {
+      "bytes": 96839,
+      "path": "evaluator_only/observation_plan_manifest.json",
+      "sha256": "395808dbdf911edb35d388e4a3c7d5fa58645d3a12283d48f2a13b4dde306d01",
+      "visibility": "EVALUATOR_ONLY"
+    },
+    "resolver": {
+      "bytes": 1041039,
+      "path": "evaluator_only/resolver.json",
+      "sha256": "6f4295b0d46a5bd2ae4f0dc7acb6a68e9c17cd5efc1c4c8d9f56407db3032bf5",
+      "visibility": "EVALUATOR_ONLY"
+    },
+    "spec_stagewise_record.schema.json": {
+      "bytes": 6248,
+      "path": "spec/stagewise_record.schema.json",
+      "sha256": "a7ecd81bef7f92daec6f341cc76785ffccc51de7e98369478917b626a13b0163",
+      "visibility": "MODEL_VISIBLE_SPEC"
+    },
+    "spec_task2_trajectory_prompt.json": {
+      "bytes": 3111,
+      "path": "spec/task2_trajectory_prompt.json",
+      "sha256": "09f2b4a4f6f57812b23648ec78c323d957a5f5f187124a4a3848fd34232bf66d",
+      "visibility": "MODEL_VISIBLE_SPEC"
+    },
+    "spec_violation_codebook.json": {
+      "bytes": 13694,
+      "path": "spec/violation_codebook.json",
+      "sha256": "49465896ddc7ee2d93986e22a172c271284a2fbb56b47cf55397152bcaa0eca4",
+      "visibility": "MODEL_VISIBLE_SPEC"
+    }
+  },
+  "human_gold_status": "PENDING_REAL_ANNOTATOR_SUBMISSIONS",
+  "label_claim_allowed": false,
+  "offline_composition_policy": {
+    "launches_second_browser_trajectory": false,
+    "task1_task2_join_is_optional_analysis": true,
+    "task2_formal_execution_depends_on_task1": false,
+    "wrong_task1_entry_repaired_with_gold": false
+  },
+  "ordered_case_refs_sha256": "0880302c62363744c92dcb13f4c09cb4753d00d3929d3afca2f36c1f183474d9",
+  "ordered_site_ids_sha256": "c994754d4c42fc60302ee8970f5951cea8e9f46bc906005400f836fdbf05ff35",
+  "schema_version": "riskchainbench-task2-contract/v0.2",
+  "source_benchmark_id": "riskchainbench-balanced-600-v0.3",
+  "status": "PASS_READY_FOR_INFERENCE_HUMAN_GOLD_PENDING",
+  "trajectory_protocol": {
+    "actual_browser_trajectory_count_per_model_site": 1,
+    "browser_backend": "BROWSERGYM_PLAYWRIGHT",
+    "browser_harness_id": "riskchainbench-browsergym-playwright/v0.1",
+    "browsergym_core_version": "0.14.3",
+    "decoding_policy_id": "riskchainbench-task2-strict-json-v0.4",
+    "execution_mode": "TASK2_STANDALONE_SITE_ONLY",
+    "inline_judge_allowed": false,
+    "judgment_mode": "DEFERRED_FIXED_EXTERNAL_JUDGE",
+    "max_case_seconds": 600,
+    "max_evidence_handoff_image_bytes": 5500000,
+    "max_evidence_handoff_images": 8,
+    "max_steps": 30,
+    "max_tokens_per_call": 4096,
+    "model_output_scope": "TRAJECTORY_AND_EVIDENCE_PACKAGE_ONLY",
+    "network_policy": "LOCAL_REPLAY_ONLY_ZERO_EGRESS",
+    "ordered_case_execution": true,
+    "playwright_version": "1.44.0",
+    "protocol_id": "riskchainbench-task2-trajectory-v0.4",
+    "retry_policy": {
+      "model_failure_retry": false,
+      "system_failure_max_retry_rounds": 2
+    },
+    "route_probe_required": true,
+    "screenshot_policy": "VIEWPORT_ONLY",
+    "task1_content_model_visible": false,
+    "task1_predictions_consumed": false,
+    "transport_policy": {
+      "allowed": [
+        "libinfer-neo",
+        "openai-compatible"
+      ],
+      "model_allowlist": false,
+      "oneapi_allowed": false,
+      "openai_compatible_wire_format": "CHAT_COMPLETIONS"
+    }
+  },
+  "web_input_policy": "SITE_ONLY_EVIDENCE_INVESTIGATION"
+}

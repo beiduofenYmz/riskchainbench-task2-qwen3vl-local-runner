@@ -1,0 +1,134 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/schemas/model_browser_trajectory_v0.1.schema.json",
+  "title": "ObfuscatedIMWalker model browser trajectory v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "trajectory_id",
+    "task_id",
+    "case_ref",
+    "actor",
+    "collection_mode",
+    "privacy",
+    "viewport",
+    "started_at",
+    "completed_at",
+    "completion_status",
+    "events",
+    "checkpoints",
+    "event_chain_sha256",
+    "libinfer_sessions"
+  ],
+  "properties": {
+    "schema_version": {"const": "0.1"},
+    "trajectory_id": {"type": "string", "pattern": "^MTR[0-9A-Za-z._-]+$"},
+    "task_id": {"type": "string", "pattern": "^HUMTASK[0-9A-Za-z._-]+$"},
+    "case_ref": {"type": "string", "pattern": "^CASE[0-9A-Za-z._-]+$"},
+    "actor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["actor_type", "model", "transport"],
+      "properties": {
+        "actor_type": {"const": "MODEL_BROWSER_AGENT"},
+        "model": {"type": "string", "minLength": 1},
+        "transport": {"const": "libinfer-neo"}
+      }
+    },
+    "collection_mode": {"const": "MODEL_DRIVEN_LOCAL_BROWSER"},
+    "privacy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["raw_input_values_sent_to_model", "input_source", "external_navigation_allowed"],
+      "properties": {
+        "raw_input_values_sent_to_model": {"const": false},
+        "input_source": {"const": "SYNTHETIC_FIXTURE_REFERENCES"},
+        "external_navigation_allowed": {"const": false}
+      }
+    },
+    "viewport": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["width", "height", "device_pixel_ratio"],
+      "properties": {
+        "width": {"type": "integer", "minimum": 1},
+        "height": {"type": "integer", "minimum": 1},
+        "device_pixel_ratio": {"type": "number", "exclusiveMinimum": 0}
+      }
+    },
+    "started_at": {"type": "string", "format": "date-time"},
+    "completed_at": {"type": "string", "format": "date-time"},
+    "completion_status": {"enum": ["COMPLETE", "PARTIAL", "ABORTED", "FAILED"]},
+    "events": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/event"}
+    },
+    "checkpoints": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["checkpoint_id", "description", "passed", "evidence_event_ids"],
+        "properties": {
+          "checkpoint_id": {"type": "string", "pattern": "^CP[0-9A-Za-z._-]+$"},
+          "description": {"type": "string", "minLength": 1},
+          "passed": {"type": "boolean"},
+          "evidence_event_ids": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {"type": "string", "pattern": "^ME[0-9A-Za-z._-]+$"}
+          }
+        }
+      }
+    },
+    "event_chain_sha256": {"$ref": "#/$defs/sha256"},
+    "libinfer_sessions": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"type": "string", "format": "uuid"}
+    },
+    "prompt_sha256": {"$ref": "#/$defs/sha256"},
+    "limitations": {"type": "array", "items": {"type": "string"}},
+    "runtime_diagnostics": {"type": "object"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "event": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "event_id", "sequence", "elapsed_ms", "event_type", "page_ref",
+        "state", "model_decision", "screenshot_ref", "screenshot_width", "screenshot_height"
+      ],
+      "properties": {
+        "event_id": {"type": "string", "pattern": "^ME[0-9A-Za-z._-]+$"},
+        "sequence": {"type": "integer", "minimum": 1},
+        "elapsed_ms": {"type": "integer", "minimum": 0},
+        "event_type": {
+          "enum": ["INPUT_COMMIT", "CLICK", "TOOL_RELOAD", "COMPLETE", "MODEL_ABORT"]
+        },
+        "page_ref": {"type": "string", "pattern": "^case://"},
+        "state": {"type": "object"},
+        "model_decision": {
+          "type": "object",
+          "additionalProperties": true,
+          "required": ["action", "reason", "request_sha256", "response_sha256", "libinfer_session_id"],
+          "properties": {
+            "action": {"enum": ["fill", "click", "reload", "stop"]},
+            "reason": {"type": "string", "minLength": 1},
+            "request_sha256": {"$ref": "#/$defs/sha256"},
+            "response_sha256": {"$ref": "#/$defs/sha256"},
+            "libinfer_session_id": {"type": "string", "format": "uuid"}
+          }
+        },
+        "screenshot_ref": {"type": "string", "minLength": 1},
+        "screenshot_width": {"type": "integer", "minimum": 1},
+        "screenshot_height": {"type": "integer", "minimum": 1}
+      }
+    }
+  }
+}

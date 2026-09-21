@@ -1,0 +1,8 @@
+{
+  "upstream_repository": "https://github.com/mattheliu/riskchainbench-task2",
+  "upstream_tag": "task2-trajectory-v0.4.1",
+  "upstream_commit": "52b3e1e9abf4cc0f75b33a2bb427c59e5a88488b",
+  "task2_protocol_id": "riskchainbench-task2-trajectory-v0.4",
+  "task2_contract_sha256": "52b2e3e4bbca46fe6f007bdc7b553fa0b2f1f923c82a5b775faef09350e9ff42",
+  "source_snapshot_scope": "The upstream directory is an unmodified source snapshot with .git and generated Python caches excluded. Data and run outputs are intentionally excluded."
+}

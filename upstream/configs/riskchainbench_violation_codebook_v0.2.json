@@ -1,0 +1,279 @@
+{
+  "schema_version": "riskchainbench-violation-codebook/v0.2",
+  "codebook_version": "2026-07-24.v0.2",
+  "source_registry": {
+    "path": "policy_sources.json",
+    "registry_version": "2026-07-24.v0.1"
+  },
+  "compatibility": {
+    "previous_codebook_version": "2026-07-23.v0.1",
+    "decision_ids_unchanged": true,
+    "primary_violation_type_ids_unchanged": true,
+    "human_visible_hierarchy_unchanged": true,
+    "migration_note_zh": "保持三值判断与九个具体违规类型 ID 不变；新增来源、证据组合和排除边界。旧版记录不得静默改写，正式比较必须按 codebook_version 分层。"
+  },
+  "benchmark_scope": {
+    "decision_target": "BENCHMARK_POLICY_VIOLATION",
+    "legal_status": "UNDETERMINED",
+    "annotation_paradigm": "PRESCRIPTIVE",
+    "source_refs": [
+      "CN_INTERNET_INFORMATION_SERVICES_MEASURES",
+      "CN_CAC_CONTENT_ECOLOGY_PROVISIONS",
+      "CN_ANTI_TELECOM_NETWORK_FRAUD_LAW",
+      "PAPER_PRESCRIPTIVE_ANNOTATION_2022"
+    ],
+    "scored_fields": [
+      "decision",
+      "primary_violation_type"
+    ],
+    "statement_zh": "仅根据受控镜像中可直接观察到的内容和交互，判断是否有充分证据支持违反本研究的内容风险政策；这不是司法定罪、行政认定或对真实主体的法律结论。",
+    "unit_of_analysis": "ONE_MASKED_MIRROR_ENVIRONMENT"
+  },
+  "decisions": [
+    {
+      "id": "VIOLATION",
+      "label_zh": "违规",
+      "definition_zh": "镜像中存在可直接观察、足以支持至少一种受控违规类型的内容、招揽、诱导或交互行为。",
+      "method_basis_zh": "结论必须由当前受控会话中的可观察证据支持，不得依赖域名、Seed、黑名单或推测。",
+      "source_refs": [
+        "PAPER_FRAUD_SMS_WALKER_2026",
+        "PAPER_PRESCRIPTIVE_ANNOTATION_2022"
+      ]
+    },
+    {
+      "id": "NON_VIOLATION",
+      "label_zh": "不违规",
+      "definition_zh": "已完成合理检查，观察到的是正常、信息性或合法兼容的服务流程，现有证据不支持任一受控违规类型。",
+      "method_basis_zh": "必须检查与风险表面元素相匹配的正常服务解释；未找到证据不自动等于不违规。",
+      "source_refs": [
+        "PAPER_FRAUD_SMS_WALKER_2026"
+      ]
+    },
+    {
+      "id": "INSUFFICIENT_EVIDENCE",
+      "label_zh": "证据不足/无法判断",
+      "definition_zh": "页面不可访问、关键状态缺失、语言无法理解、证据相互冲突，或在允许的检查范围内不能可靠作出违规/不违规结论。",
+      "method_basis_zh": "将环境或证据不足与正常结论分开，避免强制二分类导致无依据结论。",
+      "source_refs": [
+        "PAPER_FRAUD_SMS_WALKER_2026",
+        "CN_SPP_NETWORK_CRIME_CASE_PROVISIONS"
+      ]
+    }
+  ],
+  "environment_statuses": [
+    {
+      "id": "COMPLETE",
+      "label_zh": "可充分检查"
+    },
+    {
+      "id": "PARTIAL",
+      "label_zh": "部分可检查"
+    },
+    {
+      "id": "INACCESSIBLE",
+      "label_zh": "无法访问或白屏"
+    },
+    {
+      "id": "INVALID",
+      "label_zh": "任务环境错误"
+    }
+  ],
+  "primary_violation_types": [
+    {
+      "id": "FRAUD_DECEPTIVE_INDUCEMENT",
+      "label_zh": "一般诈骗或欺骗性诱导",
+      "include_zh": "以虚假承诺、奖励、退款、兼职、交易或其他欺骗性说法诱导用户执行具有财产、账号或身份风险的操作，且不更适合下列专项类型。",
+      "exclude_zh": "普通营销、内容夸张但没有明确欺骗性风险闭环的页面。",
+      "minimum_evidence_zh": "至少观察到一项具体欺骗性承诺或身份说法，以及一项财产、账号、身份信息或站外迁移等高风险动作；只有敏感关键词不能判定。",
+      "basis_summary_zh": "官方反诈定义与公安机关高发诈骗链路，结合网页证据支持原则。",
+      "source_refs": [
+        "CN_ANTI_TELECOM_NETWORK_FRAUD_LAW",
+        "CN_MPS_2025_ANTI_FRAUD_MANUAL",
+        "PAPER_FRAUD_SMS_WALKER_2026"
+      ]
+    },
+    {
+      "id": "PHISHING_CREDENTIAL_THEFT",
+      "label_zh": "钓鱼或凭证窃取",
+      "include_zh": "仿冒或异常流程中收集账号、密码、验证码、助记词、银行卡敏感信息等凭证。",
+      "exclude_zh": "与页面服务和上下文一致的正常登录、注册、找回密码或身份验证。",
+      "minimum_evidence_zh": "至少同时观察到仿冒或流程异常信号，以及凭证索取意图或可提交路径；品牌 Logo 或登录框单独不足。",
+      "basis_summary_zh": "反诈风险边界与 PhishIntention、Phishpedia 的品牌及凭证意图证据结构。",
+      "source_refs": [
+        "CN_ANTI_TELECOM_NETWORK_FRAUD_LAW",
+        "PAPER_PHISH_INTENTION_2022",
+        "PAPER_PHISHPEDIA_2021"
+      ]
+    },
+    {
+      "id": "IMPERSONATION_FAKE_SERVICE",
+      "label_zh": "冒充或虚假客服",
+      "include_zh": "冒充机构、品牌、平台、政府、熟人或客服，并借此诱导联系、付款、验证、下载或提交信息。",
+      "exclude_zh": "能够由当前服务上下文合理解释的真实客服或官方联系页面。",
+      "minimum_evidence_zh": "至少观察到明确身份主张或仿冒信号，以及利用该身份诱导联系、付款、验证、下载或提交信息的动作。",
+      "basis_summary_zh": "公安机关公布的冒充客服、冒充公检法、冒充领导熟人等高发诈骗链路。",
+      "source_refs": [
+        "CN_ANTI_TELECOM_NETWORK_FRAUD_LAW",
+        "CN_MPS_2025_ANTI_FRAUD_MANUAL"
+      ]
+    },
+    {
+      "id": "INVESTMENT_FINANCIAL_FRAUD",
+      "label_zh": "投资理财或金融诈骗",
+      "include_zh": "以投资、荐股、虚拟资产、贷款、返利或高收益为名，出现异常承诺、入金、充值、转账或收集敏感金融信息的风险闭环。",
+      "exclude_zh": "一般金融资讯、行情展示、合规产品介绍，且没有异常收益承诺或高风险操作诱导。",
+      "minimum_evidence_zh": "至少观察到投资、贷款、返利或收益主张，以及入金、转账、敏感金融信息索取、提现障碍等高风险动作之一。",
+      "basis_summary_zh": "公安机关高发虚假投资理财、贷款征信和返利类诈骗链路。",
+      "source_refs": [
+        "CN_ANTI_TELECOM_NETWORK_FRAUD_LAW",
+        "CN_MPS_2025_ANTI_FRAUD_MANUAL"
+      ]
+    },
+    {
+      "id": "GAMBLING_BETTING_PROMOTION",
+      "label_zh": "赌博或下注推广",
+      "include_zh": "直接提供、推广或导流至博彩、下注、赔率、投注、充值提现等参与路径。",
+      "exclude_zh": "新闻报道、危害教育、戒赌帮助、纯学术或政策讨论。",
+      "minimum_evidence_zh": "至少观察到博彩、下注、赔率或输赢兑付等直接供给或推广事实；仅出现“赌博”字样、新闻或风险提示不能判定。",
+      "basis_summary_zh": "互联网信息服务与网络内容生态治理规则列明的赌博内容范围。",
+      "source_refs": [
+        "CN_INTERNET_INFORMATION_SERVICES_MEASURES",
+        "CN_CAC_CONTENT_ECOLOGY_PROVISIONS",
+        "CN_PUBLIC_SECURITY_ADMINISTRATION_PUNISHMENTS_LAW_2025"
+      ]
+    },
+    {
+      "id": "CONTROLLED_SUBSTANCE_PROMOTION",
+      "label_zh": "受控药物或毒品交易推广",
+      "include_zh": "非医疗信息场景下销售、配送、撮合或导流获取受控药物、毒品或明显滥用药物。",
+      "exclude_zh": "正规医疗、药房、科普、康复、政策或新闻内容，且没有异常售卖或规避监管行为。",
+      "minimum_evidence_zh": "至少观察到受控物质或明显滥用药物的供给主张，以及价格、数量、联系、配送、下单或规避监管路径之一。",
+      "basis_summary_zh": "互联网禁毒规范关于涉毒信息、联络与交易活动的边界。",
+      "source_refs": [
+        "CN_INTERNET_ANTI_DRUG_CONVENTION",
+        "CN_PUBLIC_SECURITY_ADMINISTRATION_PUNISHMENTS_LAW_2025"
+      ]
+    },
+    {
+      "id": "ADULT_CONTENT_OR_SEXUAL_SERVICE",
+      "label_zh": "色情内容或性服务招揽",
+      "include_zh": "直接展示或推广露骨色情内容、付费色情服务、招嫖或同城性服务导流。",
+      "exclude_zh": "医学、健康、教育、新闻、艺术或非露骨关系内容。",
+      "minimum_evidence_zh": "至少观察到露骨色情内容的直接展示或获取路径，或者性服务的明确招揽及联系、付款、同城导流路径；性暗示或普通交友页面单独不足。",
+      "basis_summary_zh": "互联网信息服务与网络内容生态治理规则中的淫秽色情内容边界；性服务招揽作为本研究操作子范围。",
+      "source_refs": [
+        "CN_INTERNET_INFORMATION_SERVICES_MEASURES",
+        "CN_CAC_CONTENT_ECOLOGY_PROVISIONS",
+        "CN_PUBLIC_SECURITY_ADMINISTRATION_PUNISHMENTS_LAW_2025"
+      ]
+    },
+    {
+      "id": "MALWARE_SUSPICIOUS_DOWNLOAD",
+      "label_zh": "欺骗性或高风险下载引导",
+      "include_zh": "诱导下载来源不明、仿冒、绕过安全保护或与宣称服务明显不一致的软件、配置、插件或文件；只有具备文件级检测证据时才可在说明中称为恶意程序。",
+      "exclude_zh": "来源和用途清晰、与服务上下文一致的正常软件下载；只有下载按钮但没有欺骗、仿冒、绕过保护或不一致信号。",
+      "minimum_evidence_zh": "至少观察到下载或安装请求，以及来源仿冒、用途不一致、规避安全保护或经独立文件检测确认的恶意行为之一。",
+      "basis_summary_zh": "网络安全法的恶意程序边界与页面级下载风险的审慎区分。",
+      "source_refs": [
+        "CN_CYBERSECURITY_LAW_2025",
+        "PAPER_FRAUD_SMS_WALKER_2026"
+      ]
+    },
+    {
+      "id": "OTHER_PROHIBITED_ACTIVITY",
+      "label_zh": "其他受控违规活动",
+      "include_zh": "存在明确高风险或违规行为，但无法合理归入上述类型；必须填写可观察事实和对应的受控政策范围。",
+      "exclude_zh": "仅因页面陌生、设计粗糙、包含登录、客服、支付等常见元素而怀疑，或者无法指出本研究政策覆盖依据。",
+      "minimum_evidence_zh": "必须记录至少一项直接可观察事实，并在备注中说明为何属于当前受控政策；无法说明时选择证据不足或不违规。",
+      "basis_summary_zh": "官方互联网内容规则中的其他禁止内容兜底项；不得作为不确定样例的默认选项。",
+      "source_refs": [
+        "CN_INTERNET_INFORMATION_SERVICES_MEASURES",
+        "CN_CAC_CONTENT_ECOLOGY_PROVISIONS"
+      ]
+    },
+    {
+      "id": "NONE",
+      "label_zh": "无违规类型",
+      "usage": "仅在 decision=NON_VIOLATION 时使用。"
+    },
+    {
+      "id": "UNKNOWN",
+      "label_zh": "类型无法确定",
+      "usage": "仅在 decision=INSUFFICIENT_EVIDENCE 时使用。"
+    }
+  ],
+  "evidence_anchor_types": [
+    {
+      "id": "VISIBLE_TEXT_OR_CLAIM",
+      "label_zh": "页面可见文字或承诺"
+    },
+    {
+      "id": "VISUAL_OR_BRAND_IMPERSONATION",
+      "label_zh": "视觉或品牌仿冒信号"
+    },
+    {
+      "id": "CREDENTIAL_OR_IDENTITY_REQUEST",
+      "label_zh": "凭证或身份信息请求"
+    },
+    {
+      "id": "PAYMENT_RECHARGE_OR_TRANSFER",
+      "label_zh": "付款、充值或转账请求"
+    },
+    {
+      "id": "CONTACT_OR_PLATFORM_MIGRATION",
+      "label_zh": "联系他人或迁移平台"
+    },
+    {
+      "id": "DOWNLOAD_OR_INSTALL_REQUEST",
+      "label_zh": "下载或安装请求"
+    },
+    {
+      "id": "GAMBLING_ADULT_OR_DRUG_OFFER",
+      "label_zh": "黄赌毒相关直接供给或招揽"
+    },
+    {
+      "id": "BENIGN_SERVICE_CONSISTENCY",
+      "label_zh": "正常服务流程与上下文一致"
+    },
+    {
+      "id": "COUNTEREVIDENCE_OR_DISCLAIMER",
+      "label_zh": "反证、免责声明或风险教育"
+    },
+    {
+      "id": "ENVIRONMENT_LIMITATION",
+      "label_zh": "页面或环境限制"
+    },
+    {
+      "id": "LANGUAGE_LIMITATION",
+      "label_zh": "语言理解限制"
+    },
+    {
+      "id": "OTHER_OBSERVED_EVIDENCE",
+      "label_zh": "其他直接观察证据"
+    }
+  ],
+  "decision_rules": [
+    "先判断环境是否足以检查，再判断是否违规，最后选择主违规类型。",
+    "页面出现登录、注册、客服、支付、验证码、下载等元素本身不能直接判违规。",
+    "不得使用 site_id、原始域名、IP、seed 标签、黑名单声誉或模型答案作判断。",
+    "只有 decision=VIOLATION 才选择具体主违规类型；若多个类型并存，主类型选择最直接描述风险闭环的一项，其他放入 secondary_violation_types。",
+    "若关键证据不可见、页面不可用或语言不可理解，选择 INSUFFICIENT_EVIDENCE，不得猜测。",
+    "MALWARE_SUSPICIOUS_DOWNLOAD 在没有文件级检测证据时只能表述为欺骗性或高风险下载引导，不得直接断言恶意软件。",
+    "OTHER_PROHIBITED_ACTIVITY 只能在其他类型均不适用且可说明受控政策依据时使用，并填写 note。"
+  ],
+  "quality_policy": {
+    "independent_first_passes_per_case": 2,
+    "adjudicate_all_decision_or_primary_type_disagreements": true,
+    "preserve_raw_disagreement": true,
+    "score_abstention_separately": true,
+    "minimum_evidence_anchors": 1,
+    "minimum_category_fact_components": 2,
+    "confidence_scale": {
+      "1": "几乎无法判断",
+      "2": "证据偏弱",
+      "3": "中等把握",
+      "4": "较有把握",
+      "5": "证据直接且明确"
+    }
+  }
+}

@@ -1,0 +1,11 @@
+.venv-task2/
+.env
+data/
+runtime/
+runs/
+logs/
+artifacts/
+__pycache__/
+.pytest_cache/
+*.py[cod]
+.ms_upload_cache

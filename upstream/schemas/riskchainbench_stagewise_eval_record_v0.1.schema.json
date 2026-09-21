@@ -1,0 +1,270 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/schemas/riskchainbench_stagewise_eval_record_v0.1.schema.json",
+  "title": "RiskChainBench stagewise evaluation record v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "case_ref",
+    "model_id",
+    "run_id",
+    "task1",
+    "task2",
+    "gold"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "riskchainbench-stagewise-eval-record/v0.1"
+    },
+    "case_ref": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "model_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "task1": {
+      "$ref": "#/$defs/task1"
+    },
+    "task2": {
+      "$ref": "#/$defs/task2"
+    },
+    "gold": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/$defs/gold"
+        }
+      ]
+    }
+  },
+  "$defs": {
+    "nullable_boolean": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "nullable_rate": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "nullable_nonnegative_integer": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "decision": {
+      "enum": [
+        "VIOLATION",
+        "NON_VIOLATION",
+        "INSUFFICIENT_EVIDENCE"
+      ]
+    },
+    "concrete_violation_type": {
+      "enum": [
+        "FRAUD_DECEPTIVE_INDUCEMENT",
+        "PHISHING_CREDENTIAL_THEFT",
+        "IMPERSONATION_FAKE_SERVICE",
+        "INVESTMENT_FINANCIAL_FRAUD",
+        "GAMBLING_BETTING_PROMOTION",
+        "CONTROLLED_SUBSTANCE_PROMOTION",
+        "ADULT_CONTENT_OR_SEXUAL_SERVICE",
+        "MALWARE_SUSPICIOUS_DOWNLOAD",
+        "OTHER_PROHIBITED_ACTIVITY"
+      ]
+    },
+    "violation_type": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/concrete_violation_type"
+        },
+        {
+          "enum": [
+            "NONE",
+            "UNKNOWN"
+          ]
+        }
+      ]
+    },
+    "task1": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "evaluated",
+        "reconstruction_edit_distance",
+        "reference_character_count",
+        "reconstruction_exact",
+        "entry_top1_exact",
+        "entry_recall_at_k",
+        "entry_access_success",
+        "gate_pass"
+      ],
+      "properties": {
+        "evaluated": {
+          "type": "boolean"
+        },
+        "reconstruction_edit_distance": {
+          "$ref": "#/$defs/nullable_nonnegative_integer"
+        },
+        "reference_character_count": {
+          "$ref": "#/$defs/nullable_nonnegative_integer"
+        },
+        "reconstruction_exact": {
+          "$ref": "#/$defs/nullable_boolean"
+        },
+        "entry_top1_exact": {
+          "$ref": "#/$defs/nullable_boolean"
+        },
+        "entry_recall_at_k": {
+          "$ref": "#/$defs/nullable_boolean"
+        },
+        "entry_access_success": {
+          "$ref": "#/$defs/nullable_boolean"
+        },
+        "gate_pass": {
+          "$ref": "#/$defs/nullable_boolean"
+        }
+      }
+    },
+    "task2": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "evaluated",
+        "decision",
+        "primary_violation_type",
+        "environment_status",
+        "protocol_gate_pass",
+        "artifact_fixation_pass",
+        "evidence_support_pass",
+        "evidence_chain_score",
+        "interaction_requirement",
+        "required_path_completed",
+        "action_count",
+        "click_count",
+        "evidence_gain_action_count",
+        "unsafe_action_count",
+        "repeated_no_progress_action_count"
+      ],
+      "properties": {
+        "evaluated": {
+          "type": "boolean"
+        },
+        "decision": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/decision"
+            }
+          ]
+        },
+        "primary_violation_type": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/violation_type"
+            }
+          ]
+        },
+        "environment_status": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "COMPLETE",
+            "PARTIAL",
+            "INACCESSIBLE",
+            "INVALID",
+            null
+          ]
+        },
+        "protocol_gate_pass": {
+          "$ref": "#/$defs/nullable_boolean"
+        },
+        "artifact_fixation_pass": {
+          "$ref": "#/$defs/nullable_boolean"
+        },
+        "evidence_support_pass": {
+          "$ref": "#/$defs/nullable_boolean"
+        },
+        "evidence_chain_score": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 100
+        },
+        "interaction_requirement": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "OBSERVE_ONLY",
+            "OPTIONAL_ACTION",
+            "REQUIRED_PATH",
+            null
+          ]
+        },
+        "required_path_completed": {
+          "$ref": "#/$defs/nullable_boolean"
+        },
+        "action_count": {
+          "$ref": "#/$defs/nullable_nonnegative_integer"
+        },
+        "click_count": {
+          "$ref": "#/$defs/nullable_nonnegative_integer"
+        },
+        "evidence_gain_action_count": {
+          "$ref": "#/$defs/nullable_nonnegative_integer"
+        },
+        "unsafe_action_count": {
+          "$ref": "#/$defs/nullable_nonnegative_integer"
+        },
+        "repeated_no_progress_action_count": {
+          "$ref": "#/$defs/nullable_nonnegative_integer"
+        }
+      }
+    },
+    "gold": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "decision",
+        "primary_violation_type"
+      ],
+      "properties": {
+        "decision": {
+          "$ref": "#/$defs/decision"
+        },
+        "primary_violation_type": {
+          "$ref": "#/$defs/violation_type"
+        }
+      }
+    }
+  }
+}

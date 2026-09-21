@@ -1,0 +1,130 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/schemas/human_browser_trajectory_v0.1.schema.json",
+  "title": "ObfuscatedIMWalker direct human browser trajectory v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "trajectory_id",
+    "task_id",
+    "case_ref",
+    "actor",
+    "collection_mode",
+    "privacy",
+    "viewport",
+    "started_at",
+    "completed_at",
+    "completion_status",
+    "events",
+    "checkpoints",
+    "event_chain_sha256"
+  ],
+  "properties": {
+    "schema_version": {"const": "0.1"},
+    "trajectory_id": {"type": "string", "pattern": "^HTR[0-9A-Za-z._-]+$"},
+    "task_id": {"type": "string", "pattern": "^HUMTASK[0-9A-Za-z._-]+$"},
+    "case_ref": {"type": "string", "pattern": "^CASE[0-9A-Za-z._-]+$"},
+    "actor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["actor_type", "actor_id"],
+      "properties": {
+        "actor_type": {"const": "HUMAN"},
+        "actor_id": {"type": "string", "pattern": "^H[0-9A-Za-z._-]+$"}
+      }
+    },
+    "collection_mode": {"const": "DIRECT_LOCAL_MIRROR_INTERACTION"},
+    "privacy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["raw_input_values_stored", "input_value_hashing", "external_navigation_allowed"],
+      "properties": {
+        "raw_input_values_stored": {"const": false},
+        "input_value_hashing": {"const": "SHA-256_WITH_LENGTH"},
+        "external_navigation_allowed": {"const": false}
+      }
+    },
+    "viewport": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["width", "height", "device_pixel_ratio"],
+      "properties": {
+        "width": {"type": "integer", "minimum": 1},
+        "height": {"type": "integer", "minimum": 1},
+        "device_pixel_ratio": {"type": "number", "exclusiveMinimum": 0}
+      }
+    },
+    "started_at": {"type": "string", "format": "date-time"},
+    "completed_at": {"type": "string", "format": "date-time"},
+    "completion_status": {"enum": ["COMPLETE", "PARTIAL", "ABORTED"]},
+    "events": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/event"}
+    },
+    "checkpoints": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["checkpoint_id", "description", "passed", "evidence_event_ids"],
+        "properties": {
+          "checkpoint_id": {"type": "string", "pattern": "^CP[0-9A-Za-z._-]+$"},
+          "description": {"type": "string", "minLength": 1},
+          "passed": {"type": "boolean"},
+          "evidence_event_ids": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {"type": "string", "pattern": "^HE[0-9A-Za-z._-]+$"}
+          }
+        }
+      }
+    },
+    "event_chain_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "event": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["event_id", "sequence", "elapsed_ms", "event_type", "page_ref", "state"],
+      "properties": {
+        "event_id": {"type": "string", "pattern": "^HE[0-9A-Za-z._-]+$"},
+        "sequence": {"type": "integer", "minimum": 1},
+        "elapsed_ms": {"type": "integer", "minimum": 0},
+        "event_type": {
+          "enum": [
+            "NAVIGATE",
+            "CLICK",
+            "INPUT_COMMIT",
+            "CHANGE",
+            "FORM_SUBMIT",
+            "SCROLL",
+            "TOOL_RELOAD",
+            "TOOL_BACK",
+            "BLOCKED_EXTERNAL",
+            "PROTOCOL_TRANSITION",
+            "COMPLETE"
+          ]
+        },
+        "page_ref": {"type": "string", "pattern": "^case://"},
+        "state": {
+          "type": "object",
+          "additionalProperties": true,
+          "required": ["title", "visible_text_sha256", "interactive_count", "scroll_x", "scroll_y", "document_width", "document_height"],
+          "properties": {
+            "title": {"type": "string"},
+            "visible_text_sha256": {"$ref": "#/$defs/sha256"},
+            "interactive_count": {"type": "integer", "minimum": 0},
+            "scroll_x": {"type": "number"},
+            "scroll_y": {"type": "number"},
+            "document_width": {"type": "number", "minimum": 0},
+            "document_height": {"type": "number", "minimum": 0}
+          }
+        }
+      }
+    }
+  }
+}
